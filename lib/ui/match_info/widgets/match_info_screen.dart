@@ -4,6 +4,7 @@ import 'package:livescoreapp/ui/match_info/widgets/detail_title_listview.dart';
 import 'package:livescoreapp/utils/strings.dart';
 import '../../../domain/models/event_model.dart';
 import '../../../utils/responsive.dart';
+import 'counter_switcher.dart';
 import 'match_stat_card.dart';
 
 class MatchInfoScreen extends StatefulWidget {
@@ -18,6 +19,7 @@ class MatchInfoScreen extends StatefulWidget {
 }
 
 class _LiveScoreScreenState extends State<MatchInfoScreen> {
+  int selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
     final bool isTablet = ResponsiveHelper.isTablet();
@@ -86,20 +88,27 @@ class _LiveScoreScreenState extends State<MatchInfoScreen> {
               Expanded(
                   flex: 4,
                   child: DecoratedBox(
-                      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20)),
-                      child: Column(
-                        spacing: 10,
-                        children: [
-                          DetailTitleListView(isTablet: isTablet),
-                          SizedBox(
-                            width: double.infinity,
-                            height: 300,
-                            child: StatsComparisonScreen(
-                              statistics: widget.match.statistics ?? [],
-                            ),
+                    decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20)),
+                    child: Column(
+                      spacing: 10,
+                      children: [
+                        DetailTitleListView(
+                          isTablet: isTablet,
+                          onSelected: (index) {
+                            setState(() {
+                              selectedIndex = index;
+                            });
+                          },
+                        ),
+                        Expanded(
+                          child: ContentSwitcher(
+                            selectedIndex: selectedIndex,
+                            match: widget.match,
                           ),
-                        ],
-                      )))
+                        ),
+                      ],
+                    ),
+                  ))
             ],
           ),
         ));
