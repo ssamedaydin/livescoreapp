@@ -4,6 +4,7 @@ import 'package:livescoreapp/utils/strings.dart';
 
 import '../../../../domain/models/event_model.dart';
 import '../../../../utils/responsive.dart';
+import '../../../match_info/widgets/match_info_screen.dart';
 import 'cached_avatar_widget.dart';
 import '../../../live_score/view_model/live_score_bloc.dart';
 import '../../../live_score/view_model/live_score_state.dart';
@@ -39,73 +40,84 @@ class MatchInfoCard extends StatelessWidget {
   }
 
   Widget _buildMatchCard(BuildContext context, EventModel match, bool title) {
-    return SizedBox(
-      width: double.infinity,
-      height: ResponsiveHelper.width(isTablet ? 120 : 190),
-      child: Stack(
-        children: [
-          DecoratedBox(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: const Color(0xff820002),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.red.withOpacity(0.5),
-                  blurRadius: ResponsiveHelper.width(10),
-                  offset: Offset(0, ResponsiveHelper.height(5)),
-                ),
-              ],
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              spacing: isTablet ? 1 : 5,
-              children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    title
-                        ? Text(
-                            match.leaugeName ?? AppStrings.leauge,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700,
-                              fontSize: ResponsiveHelper.fontSize(isTablet ? 12 : 18),
-                            ),
-                          )
-                        : SizedBox(),
-                    Text(
-                      match.leaugeRound ?? "Week",
-                      style: TextStyle(
-                        color: Colors.white.withOpacity(0.7),
-                        fontWeight: FontWeight.w400,
-                        fontSize: ResponsiveHelper.fontSize(isTablet ? 8 : 13),
-                      ),
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MatchInfoScreen(
+                match: match,
+              ),
+            ));
+      },
+      child: SizedBox(
+        width: double.infinity,
+        height: ResponsiveHelper.width(isTablet ? 120 : 190),
+        child: Stack(
+          children: [
+            DecoratedBox(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: const Color(0xff820002),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.red.withOpacity(0.5),
+                    blurRadius: ResponsiveHelper.width(10),
+                    offset: Offset(0, ResponsiveHelper.height(5)),
+                  ),
+                ],
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                spacing: isTablet ? 1 : 5,
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      _buildTeamInfo(
-                        teamName: match.eventHomeTeam ?? AppStrings.homeTeam,
-                        teamLogo: match.homeTeamLogo,
-                        alignment: "Home",
-                      ),
-                      _buildMatchScore(match),
-                      _buildTeamInfo(
-                        teamName: match.eventAwayTeam ?? AppStrings.awayTeam,
-                        teamLogo: match.awayTeamLogo,
-                        alignment: "Away",
+                      title
+                          ? Text(
+                              match.leaugeName ?? AppStrings.leauge,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700,
+                                fontSize: ResponsiveHelper.fontSize(isTablet ? 12 : 18),
+                              ),
+                            )
+                          : SizedBox(),
+                      Text(
+                        match.leaugeRound ?? "Week",
+                        style: TextStyle(
+                          color: Colors.white.withOpacity(0.7),
+                          fontWeight: FontWeight.w400,
+                          fontSize: ResponsiveHelper.fontSize(isTablet ? 8 : 13),
+                        ),
                       ),
                     ],
                   ),
-                ),
-              ],
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        _buildTeamInfo(
+                          teamName: match.eventHomeTeam ?? AppStrings.homeTeam,
+                          teamLogo: match.homeTeamLogo,
+                          alignment: "Home",
+                        ),
+                        _buildMatchScore(match),
+                        _buildTeamInfo(
+                          teamName: match.eventAwayTeam ?? AppStrings.awayTeam,
+                          teamLogo: match.awayTeamLogo,
+                          alignment: "Away",
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
