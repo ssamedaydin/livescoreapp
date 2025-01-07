@@ -1,1 +1,1 @@
-# livescoreapp
+Herhangi bir maçı favorilere eklemek için üzerine çift tıklamanız yeterli.
